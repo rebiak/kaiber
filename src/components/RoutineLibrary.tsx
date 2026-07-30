@@ -96,10 +96,10 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                   <button
                     type="button"
                     onClick={() => toggleExpand(routine.id)}
-                    className="flex items-center space-x-2 text-left min-w-0 flex-1 group/title"
+                    className="flex items-center space-x-2 text-left min-w-0 flex-1 overflow-x-auto no-scrollbar group/title py-0.5"
                   >
                     <span className="text-lg sm:text-xl leading-none shrink-0">{routine.icon}</span>
-                    <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white truncate flex-1">
+                    <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white whitespace-nowrap">
                       {routine.title}
                     </span>
                   </button>
@@ -178,12 +178,12 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                       onDragStart={(e) => onDragStartStep(e, routine, step)}
                       className="p-2 rounded-lg bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/70 flex items-center justify-between gap-2 cursor-grab active:cursor-grabbing hover:border-cyan-400 dark:hover:border-cyan-500 hover:shadow-xs transition-all group/step min-w-0"
                     >
-                      <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0 flex-1">
+                      <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0 flex-1 overflow-x-auto no-scrollbar py-0.5">
                         <GripVertical className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover/step:text-cyan-500 shrink-0" />
                         <span className="text-xs font-bold text-slate-400 w-4 text-right shrink-0">
                           {idx + 1}.
                         </span>
-                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate flex-1 min-w-0 pr-1 leading-tight">
+                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap leading-tight">
                           {step.title}
                         </span>
                       </div>
