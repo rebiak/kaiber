@@ -12,6 +12,7 @@ import {
   RotateCcw,
   Play,
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FocusModeModalProps {
   isOpen: boolean;
@@ -32,6 +33,8 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
   onSetCurrentIndex,
   onResetAllStatus,
 }) => {
+  const { t, translateText } = useLanguage();
+
   if (!isOpen) return null;
 
   const total = items.length;
@@ -102,14 +105,14 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
           <div className="flex items-center space-x-2">
             <span className="w-3 h-3 rounded-full bg-emerald-500 animate-ping" />
             <h2 className="text-sm font-black tracking-widest text-emerald-400 uppercase">
-              FOCUS MODE
+              {t('focusModeTitle')}
             </h2>
           </div>
 
           <button
             onClick={onClose}
             className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
-            title="Exit Focus Mode (Esc)"
+            title={t('exitFocusMode')}
           >
             <X className="w-5 h-5" />
           </button>
@@ -125,10 +128,10 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
 
             <div className="space-y-2">
               <h3 className="text-3xl font-black text-white">
-                SEQUENCE COMPLETED!
+                {t('sequenceCompleted')}
               </h3>
               <p className="text-slate-400 text-sm max-w-md mx-auto">
-                You executed all <strong>{total} steps</strong> in your custom sequence. Excellent momentum!
+                {t('sequenceCompletedDesc', { total })}
               </p>
             </div>
 
@@ -138,14 +141,14 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
                 className="px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center space-x-2 transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
-                <span>Restart Sequence</span>
+                <span>{t('restartSequence')}</span>
               </button>
 
               <button
                 onClick={onClose}
                 className="px-6 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 transition-all"
               >
-                Return to My Plan
+                {t('returnToPlan')}
               </button>
             </div>
           </div>
@@ -156,7 +159,7 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
             {/* Step Counter */}
             <div className="space-y-1">
               <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">
-                STEP {currentIndex + 1} OF {total}
+                {t('stepXofY', { current: currentIndex + 1, total })}
               </p>
 
               {/* Progress bar line */}
@@ -171,17 +174,17 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
             {/* Giant Active Step Title */}
             <div className="py-4 space-y-4">
               <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight">
-                {currentItem.stepTitle}
+                {translateText(currentItem.stepTitle)}
               </h1>
 
               {/* Routine Badge */}
               <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-200 text-sm font-bold shadow-sm">
                 <span className="text-xl">{currentItem.routineIcon}</span>
-                <span>{currentItem.routineTitle}</span>
+                <span>{translateText(currentItem.routineTitle)}</span>
               </div>
             </div>
 
-            {/* Main Action Control Buttons (Matching prompt specifications) */}
+            {/* Main Action Control Buttons */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
               
               {/* COMPLETE Button */}
@@ -190,7 +193,7 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
                 className="w-full py-4 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-400 active:scale-98 text-slate-950 font-black text-sm tracking-wider uppercase shadow-xl shadow-emerald-500/20 flex items-center justify-center space-x-2 transition-all"
               >
                 <CheckCircle2 className="w-5 h-5" />
-                <span>[ ✓ COMPLETE ]</span>
+                <span>{t('completeBtn')}</span>
               </button>
 
               {/* SKIP Button */}
@@ -199,7 +202,7 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
                 className="w-full py-4 px-6 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-98 text-slate-300 font-extrabold text-sm tracking-wider uppercase border border-slate-700 flex items-center justify-center space-x-2 transition-all"
               >
                 <SkipForward className="w-4 h-4" />
-                <span>[ SKIP ]</span>
+                <span>{t('skipBtn')}</span>
               </button>
 
               {/* NEXT Button */}
@@ -208,7 +211,7 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
                 disabled={currentIndex === total - 1}
                 className="w-full py-4 px-6 rounded-2xl bg-cyan-600 hover:bg-cyan-500 active:scale-98 disabled:opacity-30 text-white font-black text-sm tracking-wider uppercase shadow-lg shadow-cyan-600/20 flex items-center justify-center space-x-2 transition-all"
               >
-                <span>[ NEXT ]</span>
+                <span>{t('nextBtn')}</span>
                 <ChevronRight className="w-5 h-5" />
               </button>
 
@@ -222,7 +225,7 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
                 className="inline-flex items-center space-x-1 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 font-semibold"
               >
                 <ChevronLeft className="w-4 h-4" />
-                <span>Previous Step</span>
+                <span>{t('previousStep')}</span>
               </button>
 
               <div className="flex items-center space-x-1.5 overflow-x-auto py-1">
@@ -237,22 +240,23 @@ export const FocusModeModal: React.FC<FocusModeModalProps> = ({
                         ? 'bg-emerald-800'
                         : 'bg-slate-700'
                     }`}
-                    title={`Go to step ${idx + 1}: ${it.stepTitle}`}
+                    title={`Step ${idx + 1}: ${translateText(it.stepTitle)}`}
                   />
                 ))}
               </div>
 
               <span className="font-mono text-[11px] text-slate-500 hidden sm:inline">
-                Space/Enter = Done • S = Skip
+                {t('shortcuts')}
               </span>
             </div>
 
           </div>
         ) : (
-          <p className="text-center text-slate-400">No active step available.</p>
+          <p className="text-center text-slate-400">{t('noActiveStep')}</p>
         )}
 
       </div>
     </div>
   );
 };
+

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routine, RoutineStep } from '../types';
 import { generateId } from '../utils/helpers';
 import { X, Plus, Trash2, Layers, Save, Smile } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RoutineModalProps {
   isOpen: boolean;
@@ -11,14 +12,6 @@ interface RoutineModalProps {
 }
 
 const EMOJI_OPTIONS = ['🚿', '📚', '☕', '🧘', '💻', '🍳', '🏋️', '🎨', '🧹', '🚶', '🌱', '⚡'];
-const COLOR_OPTIONS = [
-  { id: 'cyan', label: 'Cyan / Shower' },
-  { id: 'purple', label: 'Purple / Study' },
-  { id: 'amber', label: 'Amber / Energy' },
-  { id: 'emerald', label: 'Emerald / Health' },
-  { id: 'rose', label: 'Rose / Passion' },
-  { id: 'indigo', label: 'Indigo / Focus' },
-];
 
 export const RoutineModal: React.FC<RoutineModalProps> = ({
   isOpen,
@@ -26,7 +19,18 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
   routineToEdit,
   onSaveRoutine,
 }) => {
+  const { t, translateText } = useLanguage();
+
   if (!isOpen) return null;
+
+  const COLOR_OPTIONS = [
+    { id: 'cyan', label: `Cyan / ${t('routineShower')}` },
+    { id: 'purple', label: `Purple / ${t('routineStudy')}` },
+    { id: 'amber', label: `Amber / ${t('routineCoffee')}` },
+    { id: 'emerald', label: `Emerald / ${t('routineMeditation')}` },
+    { id: 'rose', label: `Rose / ${t('routineWork')}` },
+    { id: 'indigo', label: `Indigo / Focus` },
+  ];
 
   const [title, setTitle] = useState('');
   const [icon, setIcon] = useState('🚿');
@@ -36,17 +40,17 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
 
   useEffect(() => {
     if (routineToEdit) {
-      setTitle(routineToEdit.title);
+      setTitle(translateText(routineToEdit.title));
       setIcon(routineToEdit.icon);
       setColor(routineToEdit.color);
-      setSteps([...routineToEdit.steps]);
+      setSteps(routineToEdit.steps.map(s => ({ ...s, title: translateText(s.title) })));
     } else {
       setTitle('');
       setIcon('🚿');
       setColor('cyan');
       setSteps([
-        { id: generateId('st'), title: 'First step' },
-        { id: generateId('st'), title: 'Second step' },
+        { id: generateId('st'), title: t('stepFirst') },
+        { id: generateId('st'), title: t('stepSecond') },
       ]);
     }
   }, [routineToEdit, isOpen]);
@@ -100,7 +104,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
               <Layers className="w-5 h-5" />
             </div>
             <h2 className="text-lg font-black text-slate-900 dark:text-white">
-              {routineToEdit ? 'EDIT ROUTINE TEMPLATE' : 'CREATE NEW ROUTINE'}
+              {routineToEdit ? t('editRoutineTemplate') : t('createNewRoutine')}
             </h2>
           </div>
 
@@ -117,7 +121,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
           {/* Title & Icon Pick */}
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Routine Title & Icon:
+              {t('routineTitleIconLabel')}
             </label>
             <div className="flex items-center space-x-2">
               <div className="relative">
@@ -138,7 +142,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Take a Shower, English Study..."
+                placeholder={t('routinePlaceholder')}
                 className="flex-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 required
               />
@@ -148,7 +152,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
           {/* Color Selection */}
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Theme Color:
+              {t('themeColorLabel')}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {COLOR_OPTIONS.map((c) => (
@@ -171,8 +175,8 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
           {/* Routine Steps */}
           <div className="space-y-2.5">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex justify-between">
-              <span>Steps Sequence ({steps.length}):</span>
-              <span className="text-[11px] text-slate-400 font-normal">Ordered list</span>
+              <span>{t('stepsSequenceLabel', { count: steps.length })}</span>
+              <span className="text-[11px] text-slate-400 font-normal">{t('orderedList')}</span>
             </label>
 
             <div className="space-y-2 max-h-48 overflow-y-auto p-1">
@@ -213,7 +217,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
                     handleAddStep();
                   }
                 }}
-                placeholder="Add another step..."
+                placeholder={t('addAnotherStep')}
                 className="flex-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-800 dark:text-slate-200"
               />
               <button
@@ -222,7 +226,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
                 className="px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Add</span>
+                <span>{t('addStepBtn')}</span>
               </button>
             </div>
           </div>
@@ -234,7 +238,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
               onClick={onClose}
               className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
             >
-              Cancel
+              {t('cancel')}
             </button>
 
             <button
@@ -242,7 +246,7 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
               className="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold flex items-center space-x-1.5 shadow-md"
             >
               <Save className="w-4 h-4" />
-              <span>Save Routine</span>
+              <span>{t('saveRoutine')}</span>
             </button>
           </div>
 
@@ -252,3 +256,4 @@ export const RoutineModal: React.FC<RoutineModalProps> = ({
     </div>
   );
 };
+

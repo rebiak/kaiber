@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Routine, PlanItem } from '../types';
 import { generateId, getColorStyles } from '../utils/helpers';
 import { X, Shuffle, Sparkles, Check, Layers, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface InterleaveMixerModalProps {
   isOpen: boolean;
@@ -16,6 +17,8 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
   routines,
   onSetPlan,
 }) => {
+  const { t, translateText } = useLanguage();
+
   if (!isOpen) return null;
 
   const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>(
@@ -102,10 +105,10 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
             </div>
             <div>
               <h2 className="text-lg font-black text-slate-900 dark:text-white">
-                AUTO-INTERLEAVE ROUTINES
+                {t('autoInterleaveTitle')}
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Mix steps from selected routines into a single interleaved sequence
+                {t('autoInterleaveDesc')}
               </p>
             </div>
           </div>
@@ -121,7 +124,7 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
         {/* Step 1: Select Routines */}
         <div className="space-y-3">
           <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            1. Select Routines to Interleave:
+            {t('selectRoutinesLabel')}
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {routines.map((routine) => {
@@ -143,10 +146,10 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
                     <span className="text-xl">{routine.icon}</span>
                     <div className="truncate">
                       <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
-                        {routine.title}
+                        {translateText(routine.title)}
                       </p>
                       <p className="text-[10px] text-slate-400">
-                        {routine.steps.length} steps
+                        {t('stepsCount', { count: routine.steps.length })}
                       </p>
                     </div>
                   </div>
@@ -169,7 +172,7 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
         {/* Step 2: Choose Interleaving Pattern */}
         <div className="space-y-3">
           <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            2. Interleaving Pattern:
+            {t('patternLabel')}
           </label>
           <div className="grid grid-cols-3 gap-2">
             <button
@@ -181,8 +184,8 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
                   : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs'
               }`}
             >
-              <p className="text-xs font-bold">1-by-1 Alternating</p>
-              <p className="text-[10px] opacity-75 mt-0.5">A1, B1, A2, B2...</p>
+              <p className="text-xs font-bold">{t('patternAlternating')}</p>
+              <p className="text-[10px] opacity-75 mt-0.5">{t('patternAlternatingDesc')}</p>
             </button>
 
             <button
@@ -194,8 +197,8 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
                   : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs'
               }`}
             >
-              <p className="text-xs font-bold">2-by-2 Chunks</p>
-              <p className="text-[10px] opacity-75 mt-0.5">A1, A2, B1, B2...</p>
+              <p className="text-xs font-bold">{t('patternChunks')}</p>
+              <p className="text-[10px] opacity-75 mt-0.5">{t('patternChunksDesc')}</p>
             </button>
 
             <button
@@ -207,8 +210,8 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
                   : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs'
               }`}
             >
-              <p className="text-xs font-bold">Sequential</p>
-              <p className="text-[10px] opacity-75 mt-0.5">All A, then All B</p>
+              <p className="text-xs font-bold">{t('patternSequential')}</p>
+              <p className="text-[10px] opacity-75 mt-0.5">{t('patternSequentialDesc')}</p>
             </button>
           </div>
         </div>
@@ -220,7 +223,7 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
             onClick={onClose}
             className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
-            Cancel
+            {t('cancel')}
           </button>
 
           <button
@@ -229,7 +232,7 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
             className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black shadow-lg shadow-purple-600/20 flex items-center space-x-2"
           >
             <Sparkles className="w-4 h-4" />
-            <span>Generate Interleaved Plan</span>
+            <span>{t('generatePlan')}</span>
           </button>
         </div>
 
@@ -237,3 +240,4 @@ export const InterleaveMixerModal: React.FC<InterleaveMixerModalProps> = ({
     </div>
   );
 };
+

@@ -9,8 +9,11 @@ import { SequencePlanner } from './components/SequencePlanner';
 import { FocusModeModal } from './components/FocusModeModal';
 import { InterleaveMixerModal } from './components/InterleaveMixerModal';
 import { RoutineModal } from './components/RoutineModal';
+import { useLanguage } from './context/LanguageContext';
 
 export default function App() {
+  const { t } = useLanguage();
+
   // LocalStorage state initialization
   const [routines, setRoutines] = useState<Routine[]>(() => {
     try {
@@ -172,13 +175,13 @@ export default function App() {
   };
 
   const handleClearPlan = () => {
-    if (window.confirm('Are you sure you want to clear all steps from My Plan?')) {
+    if (window.confirm(t('confirmClearPlan'))) {
       setPlanItems([]);
     }
   };
 
   const handleResetPlanToDefault = () => {
-    if (window.confirm('Reset My Plan to the default interleaved sample sequence?')) {
+    if (window.confirm(t('confirmResetPlan'))) {
       setPlanItems(INITIAL_PLAN);
       setRoutines(INITIAL_ROUTINES);
     }
@@ -256,7 +259,7 @@ export default function App() {
   };
 
   const handleDeleteRoutine = (routineId: string) => {
-    if (window.confirm('Delete this routine template? Existing plan items will remain.')) {
+    if (window.confirm(t('confirmDeleteRoutine'))) {
       setRoutines((prev) => prev.filter((r) => r.id !== routineId));
     }
   };
@@ -336,9 +339,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-4 mt-8 text-center text-xs text-slate-500 dark:text-slate-400">
-        <p>
-          Sequence Planner — Organize tasks by position, mix routines seamlessly, and execute step by step.
-        </p>
+        <p>{t('footerText')}</p>
       </footer>
 
       {/* Focus Mode Overlay */}
@@ -371,3 +372,4 @@ export default function App() {
     </div>
   );
 }
+

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Routine, RoutineStep } from '../types';
 import { getColorStyles } from '../utils/helpers';
 import { Plus, GripVertical, ChevronDown, ChevronRight, Layers, Edit2, Trash2, Star } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RoutineLibraryProps {
   routines: Routine[];
@@ -26,6 +27,8 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
   onDragStartRoutine,
   onDragStartStep,
 }) => {
+  const { t, translateText } = useLanguage();
+
   const [expandedRoutineIds, setExpandedRoutineIds] = useState<string[]>(
     routines.map((r) => r.id)
   );
@@ -51,19 +54,19 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
         <div>
           <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
             <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
-            <span>ROUTINES</span>
+            <span>{t('routines')}</span>
           </h2>
           <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            Permanent templates. Star to prioritize at the top.
+            {t('routinesSubtitle')}
           </p>
         </div>
         <button
           onClick={onOpenNewRoutineModal}
           className="p-1.5 sm:p-2 rounded-lg bg-purple-50 dark:bg-purple-950/60 hover:bg-purple-100 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 transition-colors flex items-center space-x-1 text-xs font-semibold shrink-0"
-          title="Create a new routine template"
+          title={t('addRoutine')}
         >
           <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          <span className="hidden sm:inline">Add Routine</span>
+          <span className="hidden sm:inline">{t('addRoutine')}</span>
         </button>
       </div>
 
@@ -100,7 +103,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                   >
                     <span className="text-lg sm:text-xl leading-none shrink-0">{routine.icon}</span>
                     <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white whitespace-nowrap">
-                      {routine.title}
+                      {translateText(routine.title)}
                     </span>
                   </button>
                 </div>
@@ -132,14 +135,14 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                       title="Add all steps of this routine to My Plan"
                     >
                       <Plus className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
-                      <span className="text-[11px] font-semibold hidden md:inline">Add All</span>
+                      <span className="text-[11px] font-semibold hidden md:inline">{t('addAll')}</span>
                     </button>
 
                     {/* Edit Routine */}
                     <button
                       onClick={() => onEditRoutineModal(routine)}
                       className="p-1.5 rounded-md hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 shrink-0"
-                      title="Edit Routine"
+                      title={t('editRoutine')}
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
@@ -148,7 +151,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                     <button
                       onClick={() => onDeleteRoutine(routine.id)}
                       className="p-1.5 rounded-md hover:bg-red-100 dark:hover:bg-red-950/60 text-slate-400 hover:text-red-600 shrink-0"
-                      title="Delete Routine"
+                      title={t('deleteRoutine')}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -184,7 +187,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                           {idx + 1}.
                         </span>
                         <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap leading-tight">
-                          {step.title}
+                          {translateText(step.title)}
                         </span>
                       </div>
 
@@ -192,7 +195,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                         type="button"
                         onClick={() => onAddStepToPlan(routine.id, step.id)}
                         className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-cyan-100 dark:hover:bg-cyan-950/80 active:bg-cyan-200 dark:active:bg-cyan-900 text-cyan-600 dark:text-cyan-400 shrink-0 transition-all border border-slate-200/60 dark:border-slate-600/50"
-                        title="Añadir paso a Mi Plan"
+                        title={t('addStepToPlan')}
                       >
                         <Plus className="w-4 h-4 stroke-[2.5]" />
                       </button>
@@ -207,10 +210,11 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
 
       <div className="pt-2 text-center">
         <p className="text-[11px] text-slate-400 dark:text-slate-500">
-          💡 Drag any routine or step onto <strong>My Plan</strong> to interleave them.
+          {t('dragTip')}
         </p>
       </div>
 
     </div>
   );
 };
+
