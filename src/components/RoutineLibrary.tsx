@@ -86,83 +86,85 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
               <div
                 draggable
                 onDragStart={(e) => onDragStartRoutine(e, routine)}
-                className="p-2.5 sm:p-3 flex items-start sm:items-center justify-between gap-2 cursor-grab active:cursor-grabbing hover:bg-white/40 dark:hover:bg-slate-800/40 select-none transition-colors group min-w-0"
+                className="p-2.5 sm:p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 cursor-grab active:cursor-grabbing hover:bg-white/40 dark:hover:bg-slate-800/40 select-none transition-colors group min-w-0"
               >
-                <div className="flex items-start sm:items-center space-x-1.5 sm:space-x-2 min-w-0 flex-1">
-                  <div className="p-0.5 sm:p-1 mt-0.5 sm:mt-0 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 shrink-0">
+                {/* Routine Title & Icon Row */}
+                <div className="flex items-center space-x-2 min-w-0 w-full sm:w-auto flex-1">
+                  <div className="p-0.5 sm:p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 shrink-0">
                     <GripVertical className="w-4 h-4" />
                   </div>
                   <button
                     type="button"
                     onClick={() => toggleExpand(routine.id)}
-                    className="flex items-start sm:items-center space-x-1.5 sm:space-x-2 text-left min-w-0 flex-1 group/title"
+                    className="flex items-center space-x-2 text-left min-w-0 flex-1 group/title"
                   >
-                    <span className="text-lg sm:text-xl leading-none shrink-0 mt-0.5 sm:mt-0">{routine.icon}</span>
-                    <div className="min-w-0 flex-1 pr-1">
-                      <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white break-words leading-tight block">
-                        {routine.title}
-                      </span>
-                    </div>
+                    <span className="text-lg sm:text-xl leading-none shrink-0">{routine.icon}</span>
+                    <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white truncate flex-1">
+                      {routine.title}
+                    </span>
                   </button>
                 </div>
 
-                <div className="flex items-center space-x-0.5 sm:space-x-1 shrink-0 ml-auto">
-                  {/* Favorite / Priority Star Button */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleFavoriteRoutine(routine.id);
-                    }}
-                    className={`p-1 sm:p-1.5 rounded-md transition-all shrink-0 ${
-                      routine.isFavorite
-                        ? 'bg-amber-100 dark:bg-amber-950/80 text-amber-500 border border-amber-300 dark:border-amber-700'
-                        : 'hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-400 hover:text-amber-500'
-                    }`}
-                    title={routine.isFavorite ? 'Remove priority favorite' : 'Set as top priority favorite'}
-                  >
-                    <Star className={`w-3.5 h-3.5 ${routine.isFavorite ? 'fill-amber-400 text-amber-500' : ''}`} />
-                  </button>
+                {/* Routine Actions Toolbar */}
+                <div className="flex items-center justify-between sm:justify-end space-x-1 shrink-0 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-200/50 dark:border-slate-800/60 sm:border-t-0">
+                  <div className="flex items-center space-x-1 ml-auto">
+                    {/* Favorite / Priority Star Button */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleFavoriteRoutine(routine.id);
+                      }}
+                      className={`p-1.5 rounded-md transition-all shrink-0 ${
+                        routine.isFavorite
+                          ? 'bg-amber-100 dark:bg-amber-950/80 text-amber-500 border border-amber-300 dark:border-amber-700'
+                          : 'hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-400 hover:text-amber-500'
+                      }`}
+                      title={routine.isFavorite ? 'Remove priority favorite' : 'Set as top priority favorite'}
+                    >
+                      <Star className={`w-3.5 h-3.5 ${routine.isFavorite ? 'fill-amber-400 text-amber-500' : ''}`} />
+                    </button>
 
-                  {/* Add Entire Routine to Plan */}
-                  <button
-                    onClick={() => onAddRoutineToPlan(routine.id)}
-                    className="p-1 sm:p-1.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-white text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center space-x-1 shadow-2xs transition-all shrink-0"
-                    title="Add all steps of this routine to My Plan"
-                  >
-                    <Plus className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
-                    <span className="text-[11px] font-semibold hidden md:inline">Add All</span>
-                  </button>
+                    {/* Add Entire Routine to Plan */}
+                    <button
+                      onClick={() => onAddRoutineToPlan(routine.id)}
+                      className="p-1.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-white text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center space-x-1 shadow-2xs transition-all shrink-0"
+                      title="Add all steps of this routine to My Plan"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
+                      <span className="text-[11px] font-semibold hidden md:inline">Add All</span>
+                    </button>
 
-                  {/* Edit Routine */}
-                  <button
-                    onClick={() => onEditRoutineModal(routine)}
-                    className="p-1 sm:p-1.5 rounded-md hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 shrink-0"
-                    title="Edit Routine"
-                  >
-                    <Edit2 className="w-3.5 h-3.5" />
-                  </button>
+                    {/* Edit Routine */}
+                    <button
+                      onClick={() => onEditRoutineModal(routine)}
+                      className="p-1.5 rounded-md hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 shrink-0"
+                      title="Edit Routine"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                    </button>
 
-                  {/* Delete Routine */}
-                  <button
-                    onClick={() => onDeleteRoutine(routine.id)}
-                    className="p-1 sm:p-1.5 rounded-md hover:bg-red-100 dark:hover:bg-red-950/60 text-slate-400 hover:text-red-600 shrink-0"
-                    title="Delete Routine"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+                    {/* Delete Routine */}
+                    <button
+                      onClick={() => onDeleteRoutine(routine.id)}
+                      className="p-1.5 rounded-md hover:bg-red-100 dark:hover:bg-red-950/60 text-slate-400 hover:text-red-600 shrink-0"
+                      title="Delete Routine"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
 
-                  {/* Toggle expand */}
-                  <button
-                    onClick={() => toggleExpand(routine.id)}
-                    className="p-1 sm:p-1.5 rounded-md hover:bg-white/60 text-slate-500 shrink-0"
-                  >
-                    {isExpanded ? (
-                      <ChevronDown className="w-4 h-4" />
-                    ) : (
-                      <ChevronRight className="w-4 h-4" />
-                    )}
-                  </button>
+                    {/* Toggle expand */}
+                    <button
+                      onClick={() => toggleExpand(routine.id)}
+                      className="p-1.5 rounded-md hover:bg-white/60 text-slate-500 shrink-0"
+                    >
+                      {isExpanded ? (
+                        <ChevronDown className="w-4 h-4" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -181,7 +183,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                         <span className="text-xs font-bold text-slate-400 w-4 text-right shrink-0">
                           {idx + 1}.
                         </span>
-                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 break-words min-w-0 flex-1 pr-1 leading-tight">
+                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate flex-1 min-w-0 pr-1 leading-tight">
                           {step.title}
                         </span>
                       </div>
