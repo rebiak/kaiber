@@ -1,0 +1,6 @@
+{
+  "name": "Sequence Planner",
+  "description": "Visual Sequence Planner for interleaving routine steps into custom execution plans without time or timestamps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
