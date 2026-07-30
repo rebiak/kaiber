@@ -281,7 +281,7 @@ export const SequencePlanner: React.FC<SequencePlannerProps> = ({
                 <div
                   draggable
                   onDragStart={(e) => handleDragStartPlanItem(e, realIndex)}
-                  className={`group relative rounded-xl border p-3 sm:p-4 bg-white dark:bg-slate-800/90 shadow-2xs hover:shadow-md transition-all duration-200 ${
+                  className={`group rounded-xl border p-3 sm:p-4 bg-white dark:bg-slate-800/90 shadow-2xs hover:shadow-md transition-all duration-200 ${
                     item.status === 'completed'
                       ? 'border-slate-200 dark:border-slate-800 opacity-75 bg-slate-50/50 dark:bg-slate-900/50'
                       : item.status === 'in_progress'
@@ -289,102 +289,92 @@ export const SequencePlanner: React.FC<SequencePlannerProps> = ({
                       : 'border-slate-200/90 dark:border-slate-700/80 hover:border-cyan-400 dark:hover:border-cyan-500'
                   }`}
                 >
-                  {/* Dedicated Mobile Quick Delete Button in Top Right */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onRemoveItem(item.id);
-                    }}
-                    className="sm:hidden absolute top-3 right-3 p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400 border border-red-200/60 dark:border-red-900/50 transition-colors z-10"
-                    title="Remove from My Plan"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-2.5">
                     
-                    {/* Left: Position Number, Drag Handle, Step Title, Routine Badge */}
-                    <div className="flex items-center space-x-3 min-w-0 pr-8 sm:pr-0">
-                      
-                      {/* Drag Handle */}
-                      <div className="cursor-grab active:cursor-grabbing p-1 rounded text-slate-300 dark:text-slate-600 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
-                        <GripVertical className="w-4 h-4" />
-                      </div>
-
-                      {/* Sequential Position Number (1., 2., 3...) */}
-                      <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-black text-sm text-slate-700 dark:text-slate-200 shrink-0">
-                        {realIndex + 1}
-                      </div>
-
-                      {/* Step Details */}
-                      <div className="space-y-1 min-w-0">
-                        <div className="flex items-center space-x-2 flex-wrap">
-                          <span
-                            className={`text-[11px] font-bold px-2 py-0.5 rounded-md border flex items-center space-x-1 ${colorStyles.badgeBg} ${colorStyles.border}`}
-                          >
-                            <span>{item.routineIcon}</span>
-                            <span>{item.routineTitle}</span>
-                          </span>
-
-                          {/* Quick Status Tag */}
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${statusDetails.badgeClass}`}>
-                            {statusDetails.symbol} {statusDetails.label}
-                          </span>
+                    {/* Top Row: Drag Handle + Position + Routine Badge + Status Tag + Delete Trash Button */}
+                    <div className="flex items-center justify-between gap-2 min-w-0">
+                      <div className="flex items-center space-x-2 min-w-0 flex-1 overflow-x-auto no-scrollbar py-0.5">
+                        <div className="cursor-grab active:cursor-grabbing p-0.5 rounded text-slate-300 dark:text-slate-600 group-hover:text-slate-600 dark:group-hover:text-slate-300 shrink-0">
+                          <GripVertical className="w-4 h-4" />
                         </div>
 
-                        {editingItemId === item.id ? (
-                          <div className="flex items-center space-x-1 mt-1">
-                            <input
-                              type="text"
-                              value={editingTitle}
-                              onChange={(e) => setEditingTitle(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleSaveTitle(item.id);
-                                if (e.key === 'Escape') setEditingItemId(null);
-                              }}
-                              autoFocus
-                              className="px-2 py-0.5 text-xs font-bold bg-slate-100 dark:bg-slate-700 border border-cyan-500 rounded text-slate-900 dark:text-white focus:outline-none"
-                            />
-                            <button
-                              onClick={() => handleSaveTitle(item.id)}
-                              className="px-2 py-0.5 text-[10px] font-bold bg-cyan-600 text-white rounded hover:bg-cyan-500"
-                            >
-                              Save
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex items-center space-x-1.5 group/title">
-                            <p
-                              onClick={() => handleStartEditing(item)}
-                              className={`text-sm font-bold text-slate-900 dark:text-white leading-tight cursor-pointer hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors ${
-                                item.status === 'completed' ? 'line-through text-slate-400 dark:text-slate-500' : ''
-                              }`}
-                              title="Click to edit step name in My Plan"
-                            >
-                              {item.stepTitle}
-                            </p>
-                            <button
-                              onClick={() => handleStartEditing(item)}
-                              className="opacity-100 sm:opacity-0 sm:group-hover/title:opacity-100 p-0.5 text-slate-400 hover:text-cyan-500 transition-opacity"
-                              title="Edit step name"
-                            >
-                              <Edit3 className="w-3 h-3" />
-                            </button>
-                          </div>
-                        )}
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-black text-xs sm:text-sm text-slate-700 dark:text-slate-200 shrink-0">
+                          {realIndex + 1}
+                        </div>
+
+                        <span
+                          className={`text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md border flex items-center space-x-1 shrink-0 ${colorStyles.badgeBg} ${colorStyles.border}`}
+                        >
+                          <span>{item.routineIcon}</span>
+                          <span className="truncate max-w-[140px] sm:max-w-none">{item.routineTitle}</span>
+                        </span>
+
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded border shrink-0 ${statusDetails.badgeClass}`}>
+                          {statusDetails.symbol} {statusDetails.label}
+                        </span>
                       </div>
 
+                      <button
+                        onClick={() => onRemoveItem(item.id)}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/60 transition-colors shrink-0 ml-auto"
+                        title="Remove from My Plan"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
 
-                    {/* Right: Actions & Status Controls */}
-                    <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100 dark:border-slate-700/50">
+                    {/* Middle Row: Step Title */}
+                    <div className="pl-8 sm:pl-9 pr-1">
+                      {editingItemId === item.id ? (
+                        <div className="flex items-center space-x-1">
+                          <input
+                            type="text"
+                            value={editingTitle}
+                            onChange={(e) => setEditingTitle(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleSaveTitle(item.id);
+                              if (e.key === 'Escape') setEditingItemId(null);
+                            }}
+                            autoFocus
+                            className="w-full px-2 py-1 text-xs font-bold bg-slate-100 dark:bg-slate-700 border border-cyan-500 rounded text-slate-900 dark:text-white focus:outline-none"
+                          />
+                          <button
+                            onClick={() => handleSaveTitle(item.id)}
+                            className="px-2.5 py-1 text-xs font-bold bg-cyan-600 text-white rounded hover:bg-cyan-500 shrink-0"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center space-x-1.5 group/title">
+                          <p
+                            onClick={() => handleStartEditing(item)}
+                            className={`text-sm font-bold text-slate-900 dark:text-white leading-snug cursor-pointer hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors break-words flex-1 min-w-0 ${
+                              item.status === 'completed' ? 'line-through text-slate-400 dark:text-slate-500' : ''
+                            }`}
+                            title="Click to edit step name"
+                          >
+                            {item.stepTitle}
+                          </p>
+                          <button
+                            onClick={() => handleStartEditing(item)}
+                            className="p-1 text-slate-400 hover:text-cyan-500 shrink-0"
+                            title="Edit step name"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Bottom Row: Status Selector Bar + Reorder & Copy Actions */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
                       
-                      {/* Status Toggle Buttons */}
-                      <div className="flex items-center space-x-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg border border-slate-200/60 dark:border-slate-800 overflow-x-auto max-w-full">
-                        
+                      {/* Status Selector Pills */}
+                      <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg border border-slate-200/60 dark:border-slate-800 overflow-x-auto max-w-full no-scrollbar">
                         <button
                           onClick={() => onUpdateStepStatus(item.id, 'pending')}
-                          className={`px-2 py-1 text-[11px] font-bold rounded-md transition-all ${
+                          className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition-all shrink-0 whitespace-nowrap ${
                             item.status === 'pending'
                               ? 'bg-white dark:bg-slate-800 text-slate-800 dark:text-white shadow-2xs'
                               : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
@@ -396,7 +386,7 @@ export const SequencePlanner: React.FC<SequencePlannerProps> = ({
 
                         <button
                           onClick={() => onUpdateStepStatus(item.id, 'in_progress')}
-                          className={`px-2 py-1 text-[11px] font-bold rounded-md transition-all ${
+                          className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition-all shrink-0 whitespace-nowrap ${
                             item.status === 'in_progress'
                               ? 'bg-amber-500 text-white shadow-2xs'
                               : 'text-slate-400 hover:text-amber-600 dark:hover:text-amber-400'
@@ -408,7 +398,7 @@ export const SequencePlanner: React.FC<SequencePlannerProps> = ({
 
                         <button
                           onClick={() => onUpdateStepStatus(item.id, 'completed')}
-                          className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition-all ${
+                          className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition-all shrink-0 whitespace-nowrap ${
                             item.status === 'completed'
                               ? 'bg-emerald-600 text-white shadow-2xs'
                               : 'text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400'
@@ -420,7 +410,7 @@ export const SequencePlanner: React.FC<SequencePlannerProps> = ({
 
                         <button
                           onClick={() => onUpdateStepStatus(item.id, 'skipped')}
-                          className={`px-1.5 py-1 text-[11px] font-bold rounded-md transition-all ${
+                          className={`px-2 py-1 text-[11px] font-bold rounded-md transition-all shrink-0 whitespace-nowrap ${
                             item.status === 'skipped'
                               ? 'bg-slate-700 text-white shadow-2xs'
                               : 'text-slate-400 hover:text-slate-600'
@@ -429,11 +419,10 @@ export const SequencePlanner: React.FC<SequencePlannerProps> = ({
                         >
                           Skip
                         </button>
-
                       </div>
 
                       {/* Reorder Up/Down Arrow Buttons & Extra Actions */}
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center justify-end space-x-1 shrink-0">
                         <button
                           onClick={() => onMoveItem(realIndex, realIndex - 1)}
                           disabled={realIndex === 0}
@@ -451,22 +440,12 @@ export const SequencePlanner: React.FC<SequencePlannerProps> = ({
                           <ArrowDown className="w-3.5 h-3.5" />
                         </button>
 
-                        {/* Duplicate */}
                         <button
                           onClick={() => onDuplicateItem(item.id)}
                           className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-purple-600 transition-colors"
                           title="Duplicate Step"
                         >
                           <Copy className="w-3.5 h-3.5" />
-                        </button>
-
-                        {/* Delete Button (Desktop & Tablet) */}
-                        <button
-                          onClick={() => onRemoveItem(item.id)}
-                          className="hidden sm:inline-flex p-1.5 rounded-md hover:bg-red-50 dark:hover:bg-red-950/60 text-slate-400 hover:text-red-600 transition-colors"
-                          title="Remove from My Plan"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
 
