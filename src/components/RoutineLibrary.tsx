@@ -86,34 +86,27 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
               <div
                 draggable
                 onDragStart={(e) => onDragStartRoutine(e, routine)}
-                className="p-3 flex items-start sm:items-center justify-between gap-2 cursor-grab active:cursor-grabbing hover:bg-white/40 dark:hover:bg-slate-800/40 select-none transition-colors group"
+                className="p-2.5 sm:p-3 flex items-start sm:items-center justify-between gap-2 cursor-grab active:cursor-grabbing hover:bg-white/40 dark:hover:bg-slate-800/40 select-none transition-colors group min-w-0"
               >
-                <div className="flex items-start sm:items-center space-x-2 min-w-0 flex-1">
-                  <div className="p-1 mt-0.5 sm:mt-0 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 shrink-0">
+                <div className="flex items-start sm:items-center space-x-1.5 sm:space-x-2 min-w-0 flex-1">
+                  <div className="p-0.5 sm:p-1 mt-0.5 sm:mt-0 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 shrink-0">
                     <GripVertical className="w-4 h-4" />
                   </div>
                   <button
                     type="button"
                     onClick={() => toggleExpand(routine.id)}
-                    className="flex items-start sm:items-center space-x-2 text-left min-w-0 flex-1 group/title"
+                    className="flex items-start sm:items-center space-x-1.5 sm:space-x-2 text-left min-w-0 flex-1 group/title"
                   >
-                    <span className="text-xl leading-none shrink-0 mt-0.5 sm:mt-0">{routine.icon}</span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center space-x-1.5 flex-wrap">
-                        <span className="font-extrabold text-sm text-slate-900 dark:text-white break-words">
-                          {routine.title}
-                        </span>
-                        {routine.isFavorite && (
-                          <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 tracking-wide shrink-0">
-                            ★ Prioridad
-                          </span>
-                        )}
-                      </div>
+                    <span className="text-lg sm:text-xl leading-none shrink-0 mt-0.5 sm:mt-0">{routine.icon}</span>
+                    <div className="min-w-0 flex-1 pr-1">
+                      <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white break-words leading-tight block">
+                        {routine.title}
+                      </span>
                     </div>
                   </button>
                 </div>
 
-                <div className="flex items-center space-x-1 shrink-0">
+                <div className="flex items-center space-x-0.5 sm:space-x-1 shrink-0 ml-auto">
                   {/* Favorite / Priority Star Button */}
                   <button
                     type="button"
@@ -121,7 +114,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                       e.stopPropagation();
                       onToggleFavoriteRoutine(routine.id);
                     }}
-                    className={`p-1.5 rounded-md transition-all ${
+                    className={`p-1 sm:p-1.5 rounded-md transition-all shrink-0 ${
                       routine.isFavorite
                         ? 'bg-amber-100 dark:bg-amber-950/80 text-amber-500 border border-amber-300 dark:border-amber-700'
                         : 'hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-400 hover:text-amber-500'
@@ -134,17 +127,17 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                   {/* Add Entire Routine to Plan */}
                   <button
                     onClick={() => onAddRoutineToPlan(routine.id)}
-                    className="p-1.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-white text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center space-x-1 shadow-2xs transition-all"
+                    className="p-1 sm:p-1.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-white text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center space-x-1 shadow-2xs transition-all shrink-0"
                     title="Add all steps of this routine to My Plan"
                   >
-                    <Plus className="w-3.5 h-3.5 text-cyan-600" />
+                    <Plus className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
                     <span className="text-[11px] font-semibold hidden md:inline">Add All</span>
                   </button>
 
                   {/* Edit Routine */}
                   <button
                     onClick={() => onEditRoutineModal(routine)}
-                    className="p-1.5 rounded-md hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                    className="p-1 sm:p-1.5 rounded-md hover:bg-white/60 dark:hover:bg-slate-800/80 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 shrink-0"
                     title="Edit Routine"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
@@ -153,7 +146,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                   {/* Delete Routine */}
                   <button
                     onClick={() => onDeleteRoutine(routine.id)}
-                    className="p-1.5 rounded-md hover:bg-red-100 dark:hover:bg-red-950/60 text-slate-400 hover:text-red-600"
+                    className="p-1 sm:p-1.5 rounded-md hover:bg-red-100 dark:hover:bg-red-950/60 text-slate-400 hover:text-red-600 shrink-0"
                     title="Delete Routine"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -162,7 +155,7 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
                   {/* Toggle expand */}
                   <button
                     onClick={() => toggleExpand(routine.id)}
-                    className="p-1.5 rounded-md hover:bg-white/60 text-slate-500"
+                    className="p-1 sm:p-1.5 rounded-md hover:bg-white/60 text-slate-500 shrink-0"
                   >
                     {isExpanded ? (
                       <ChevronDown className="w-4 h-4" />
@@ -175,31 +168,31 @@ export const RoutineLibrary: React.FC<RoutineLibraryProps> = ({
 
               {/* Routine Steps List (Draggable individual steps) */}
               {isExpanded && (
-                <div className="px-3 pb-3 pt-1 space-y-1.5 border-t border-slate-200/50 dark:border-slate-800/60 bg-white/50 dark:bg-slate-900/40">
+                <div className="px-2.5 sm:px-3 pb-2.5 sm:pb-3 pt-1 space-y-1.5 border-t border-slate-200/50 dark:border-slate-800/60 bg-white/50 dark:bg-slate-900/40">
                   {routine.steps.map((step, idx) => (
                     <div
                       key={step.id}
                       draggable
                       onDragStart={(e) => onDragStartStep(e, routine, step)}
-                      className="p-2 rounded-lg bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/70 flex items-center justify-between space-x-2 cursor-grab active:cursor-grabbing hover:border-cyan-400 dark:hover:border-cyan-500 hover:shadow-xs transition-all group/step"
+                      className="p-2 rounded-lg bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/70 flex items-center justify-between gap-2 cursor-grab active:cursor-grabbing hover:border-cyan-400 dark:hover:border-cyan-500 hover:shadow-xs transition-all group/step min-w-0"
                     >
-                      <div className="flex items-center space-x-2 min-w-0">
-                        <GripVertical className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover/step:text-cyan-500" />
-                        <span className="text-xs font-bold text-slate-400 w-4 text-right">
+                      <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0 flex-1">
+                        <GripVertical className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover/step:text-cyan-500 shrink-0" />
+                        <span className="text-xs font-bold text-slate-400 w-4 text-right shrink-0">
                           {idx + 1}.
                         </span>
-                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate">
+                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 break-words min-w-0 flex-1 pr-1 leading-tight">
                           {step.title}
                         </span>
                       </div>
 
                       <button
+                        type="button"
                         onClick={() => onAddStepToPlan(routine.id, step.id)}
-                        className="p-1.5 px-2.5 rounded bg-slate-100 dark:bg-slate-700 active:bg-cyan-100 dark:active:bg-cyan-950 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-cyan-800 dark:hover:text-cyan-200 flex items-center space-x-1 shrink-0 transition-all"
-                        title="Add this step to My Plan"
+                        className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-cyan-100 dark:hover:bg-cyan-950/80 active:bg-cyan-200 dark:active:bg-cyan-900 text-cyan-600 dark:text-cyan-400 shrink-0 transition-all border border-slate-200/60 dark:border-slate-600/50"
+                        title="Añadir paso a Mi Plan"
                       >
-                        <Plus className="w-3.5 h-3.5 text-cyan-600" />
-                        <span>Plan</span>
+                        <Plus className="w-4 h-4 stroke-[2.5]" />
                       </button>
                     </div>
                   ))}
